@@ -1,0 +1,101 @@
+$(function () {
+
+	$('#optionsRadios1').click(function () {
+		$('.ssr').show();
+	});
+	$('#optionsRadios2').click(function () {
+		$('.ssr').hide();
+	});
+	$('#optionsRadios5').click(function () {
+		$('.ddr').show();
+	});
+	$('#optionsRadios6').click(function () {
+		$('.ddr').hide();
+	});
+	//设定表单验证的规则
+	$('#form-ss').bootstrapValidator({
+		live: 'enabled',
+		message: 'This value is not valid',
+		feedbackIcons: {
+		valid: 'glyphicon glyphicon-ok',
+		invalid: 'glyphicon glyphicon-remove',
+		validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			invoiceCompanyName: {
+				validators: {
+					notEmpty: {
+						message: '公司名称不能为空'
+					}
+				}
+			},
+			invoiceNum: {
+				validators: {
+					notEmpty: {
+						message: '纳税人识别号不能为空'
+					}
+				}
+			},
+			mailName:{
+				validators: {
+					notEmpty:{
+						message:'收件人姓名不能为空'
+					}
+				}
+			},
+			mailPhone: {
+				validators: {
+					notEmpty: {
+						message: '收件人手机号不能为空'
+					},
+					regexp: {
+						regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+						message: '手机号码格式有误'
+					}
+				}
+			},
+			mailAddress: {
+				validators: {
+					notEmpty: {
+						message: '地址不能为空'
+					}
+				}
+			}
+		}
+	}); 
+	//表单验证成功以后的操作
+	 $(document).one("click","#btn-ss",function () {
+		$('#form-ss').bootstrapValidator('validate'); //提交验证
+		if ($('#form-ss').data('bootstrapValidator').isValid()) {
+			$.ajax({
+    			url: 'invoice_Action!addInvoice.action',
+    	        type: "post",
+    	        cache: false,
+    	        data:{
+    	        	"signId":$("#signId").val(),
+    	        	"isInvoice":$('input[name="isInvoice"]:checked').val(),
+    	        	"invoiceCompanyName":$('input[name="invoiceCompanyName"]').val(),
+    	        	"invoiceNum":$('input[name="invoiceNum"]').val(),
+    	        	"invoiceContent":$('input[name="invoiceContent"]:checked').val(),
+    	        	"isMail":$('input[name="isMail"]:checked').val(),
+    	        	"mailAddress":$('input[name="mailAddress"]').val(),
+    	        	"mailName":$('input[name="mailName"]').val(),
+    	        	"mailPhone":$('input[name="mailPhone"]').val()
+    	        },
+    	        success:function(data){
+    	        	$('.model').show();
+					$('.close').click(function(){
+						$('.model').hide();
+					})
+					$('.txt').append('<p>报名成功！您的预留邮箱会收到一封确认邮件，请注意查收！<p>');
+					$('#btn-g').click(function(){
+//						window.top.close(); 
+//						WeixinJSBridge.call('closeWindow');
+						location.href = 'invoice_Action!call.action';
+					})
+    	        }
+        	});
+		}
+	}); 
+
+});

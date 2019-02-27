@@ -1,0 +1,21 @@
+body{
+	background:#F5F5F5;
+	color:#777;
+	padding-top:10%;
+}
+.title{
+	width:100%;
+	height:auto;
+	line-height: 50px;
+	font-size:18px!important;
+	font-weight:bold;
+	padding-left:15px;
+}
+form{
+	height:auto;
+	padding:8px 15px;
+}
+form .form-group{
+	padding:0px 15px;
+	margin-bottom: 6px!important;
+}

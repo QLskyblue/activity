@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/swiper.min.css">
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+	<body>
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide one"></div>
+				<div class="swiper-slide two"></div>
+				<div class="swiper-slide three"></div>
+				<div class="swiper-slide four"></div>
+				<div class="swiper-slide five"></div>
+				<div class="swiper-slide six"></div>
+				<div class="swiper-slide seven"></div>
+				<div class="swiper-slide eight"></div>
+				<div class="swiper-slide nine"></div>
+				<div class="swiper-slide ten"></div>
+			</div>
+			<div class="swiper-pagination"></div>
+		</div>
+		<script src="js/jquery-2.1.0.js"></script>
+		<script src="js/swiper.min.js"></script>
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				direction: 'vertical',
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				mousewheel: true
+			});
+		</script>
+	</body>
+</html>

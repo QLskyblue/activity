@@ -1,0 +1,316 @@
+$(function() {
+	// 取值
+	var companyName = sessionStorage.getItem('companyName');
+	$('input[name="companyName"]').val(companyName);
+	var signNum = sessionStorage.getItem('signNum');
+	$('input[name="signNum"]').val(signNum);
+	var numberInfo = "";
+	$('#meetDiv').html("");
+	for (var i = 0; i < signNum; i++) {
+		$('.swiper-slide').not('.eight').hide();
+		var nameVal = sessionStorage.getItem('name');
+		var phoneVal = sessionStorage.getItem('phone');
+		var emailVal = sessionStorage.getItem('email');
+		if (signNum == 1) {
+			numberInfo =
+				"<p>参会人员<p><div class='form-group meet_css'><input type='text' id='name' class='form-control' name='name' value='"+nameVal.split(",")[i]+"' name_val='name1'  autocomplete='off' placeholder='请填写您的姓名'></div><div class='form-group'><input type='text' id='phone' class='form-control' name='phone' value='"+phoneVal.split(",")[i]+"' name_val='phone1' autocomplete='off' placeholder='请填写您的手机号'></div><div class='form-group'><input type='text' id='email' class='form-control aaX' name='email' value='"+emailVal.split(",")[i]+"'  name_val='email1'  autocomplete='off' placeholder='请填写您的邮箱'></div>";
+		} else if (signNum >= 2) {
+			numberInfo += "<p>参会人员" + Number(i+1) + "<p><div class='form-group meet_css'><input type='text' id='name" + i +
+			"' class='form-control meet_css' name='name' value='"+nameVal.split(",")[i]+"' name_val='name"+i+"' autocomplete='off' placeholder='请填写您的姓名'></div><div class='form-group'><input type='text' id='phone" +
+			i + "' class='form-control meet_css' name='phone' value='"+phoneVal.split(",")[i]+"' name_val='phone"+i+"' autocomplete='off' placeholder='请填写您的手机号'></div><div class='form-group'><input type='text' id='email" +
+			i + "' class='form-control meet_css' name='email' value='"+emailVal.split(",")[i]+"' name_val='email"+i+"' autocomplete='off' placeholder='请填写您的邮箱'></div>";
+		}
+	}
+	$('#meetDiv').append(numberInfo);
+	//屏幕滑动
+	var swiper = new Swiper('.swiper-container', {
+		direction: 'vertical',
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true,
+		},
+		mousewheel: true
+	});
+	//事件冒泡（滑动重复）
+	var container_fluid = document.getElementsByClassName('container-fluid')[0];
+	var main = document.getElementsByClassName('main')[0];
+	container_fluid.ontouchmove = function() {
+		event.cancelBubble = true;
+		event.stopPropagation();
+	}
+	//判断纵向滚动条是否出现,给用户一个提示信息（上下滑动）
+
+	//验证表单函数
+	var validate = function() {
+		$('#form-test').bootstrapValidator({
+			live: 'enabled',
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				name: {
+					message: '姓名验证失败',
+					validators: {
+						notEmpty: {
+							message: '姓名不能为空'
+						},
+						stringLength: {
+							min: 2,
+							max: 4,
+							message: '姓名长度必须在2~4个字符之间'
+						}
+					}
+				},
+				companyName: {
+					validators: {
+						notEmpty: {
+							message: '公司名称不能为空'
+						}
+					}
+				},
+				signNum: {
+					validators: {
+						notEmpty: {
+							message: '参会人数不能为空'
+						},
+						regexp: {
+							regexp: /^[1-9]+\d*$/,
+							message: '参会人数必须为数字且不能为0'
+						}
+					}
+				},
+				phone: {
+					validators: {
+						notEmpty: {
+							message: '手机号不能为空'
+						},
+						regexp: {
+							regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+							message: '手机号码格式有误'
+						}
+					}
+				},
+				email: {
+					validators: {
+						notEmpty: {
+							message: '邮箱地址不能为空'
+						},
+						emailAddress: {
+							message: '邮箱地址格式有误'
+						}
+					}
+				}
+
+			}
+
+		});
+	}
+
+	//输入参会人数显示
+	$('#signNum').bind('input propertychange', function() {
+		var signNum = $(this).val();
+		//console.log(signNum)
+		var numberInfo = "";
+		$('#meetDiv').html("");
+		if (signNum == 1) {
+			numberInfo =
+				"<p>参会人员<p><div class='form-group meet_css'><input type='text' id='name' class='form-control' name='name' value='' name_val='name1'  autocomplete='off' placeholder='请填写您的姓名'></div><div class='form-group'><input type='text' id='phone' class='form-control' name='phone' value='' name_val='phone1' autocomplete='off' placeholder='请填写您的手机号'></div><div class='form-group'><input type='text' id='email' class='form-control aaX' name='email' value='' name_val='email1' autocomplete='off' placeholder='请填写您的邮箱'></div>";
+		} else if (signNum >= 2) {
+			for (i = 0; i < signNum; i++) {
+				numberInfo += "<p>参会人员" + Number(i+1) + "<p><div class='form-group meet_css'><input type='text' id='name" + i +
+					"' class='form-control meet_css' name='name' value='' name_val='name"+i+"' autocomplete='off' placeholder='请填写您的姓名'></div><div class='form-group'><input type='text' id='phone" +
+					i + "' class='form-control meet_css' name='phone' value='' name_val='phone"+i+"' autocomplete='off' placeholder='请填写您的手机号'></div><div class='form-group'><input type='text' id='email" +
+					i + "' class='form-control meet_css' name='email' value='' name_val='email"+i+"' autocomplete='off' placeholder='请填写您的邮箱'></div>";
+			}
+		}
+		$('#meetDiv').append(numberInfo);
+		if($('#signNum').val()>=1){
+			$('.infoo').show();
+			setTimeout(function(){
+				$('.infoo').hide();
+			},400)
+		}else{
+			$('.infoo').hide();
+		}
+		if (signNum >= 2) {
+			for (i = 1; i <= signNum; i++) {
+				$('#form-test').bootstrapValidator("addField", $("[name='name" + i + "']"), {
+					validators: {
+						notEmpty: {
+							message: '姓名不能为空!'
+						}
+					}
+				});
+				$('#form-test').bootstrapValidator("addField", $("[name='phone" + i + "']"), {
+					validators: {
+						notEmpty: {
+							message: '手机号码不能为空!'
+						},
+						regexp: {
+							regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+							message: '手机号码格式有误!'
+						}
+					}
+				});
+				$('#form-test').bootstrapValidator("addField", $("[name='email" + i + "']"), {
+					validators: {
+						notEmpty: {
+							message: '邮箱地址不能为空!'
+						},
+						emailAddress: {
+							message: '邮箱地址格式有误!'
+						}
+					}
+				});
+			}
+		}
+		$('#form-test').bootstrapValidator("addField", $("[name='companyName']"), {
+			validators: {
+				notEmpty: {
+					message: '公司名称不能为空!'
+				}
+			}
+		});
+		$('#form-test').bootstrapValidator("addField", $("[name='name']"), {
+			validators: {
+				notEmpty: {
+					message: '姓名不能为空!'
+				}
+			}
+		});
+		$('#form-test').bootstrapValidator("addField", $("[name='signNum']"), {
+			validators: {
+				notEmpty: {
+					message: '参会人数不能为空!'
+				},
+				regexp: {
+					regexp: /^[1-9]+\d*$/,
+					message: '参会人数必须为数字且不能为0'
+				}
+			}
+		});
+		$('#form-test').bootstrapValidator("addField", $("[name='phone']"), {
+			validators: {
+				notEmpty: {
+					message: '手机号不能为空!'
+				},
+				regexp: {
+					regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+					message: '手机号码格式有误!'
+				}
+			}
+		});
+		$('#form-test').bootstrapValidator("addField", $("[name='email']"), {
+			validators: {
+				notEmpty: {
+					message: '邮箱地址不能为空!'
+				},
+				emailAddress: {
+					message: '邮箱地址格式有误!'
+				}
+			}
+		});
+	});
+	//表单验证成功以后的操作
+	$(document).on("click", '#btn-test', function() {
+		$('#form-test').bootstrapValidator('validate'); //提交验证
+		if ($('#form-test').data('bootstrapValidator').isValid()) { //获取验证结果，如果成功，执行下面代码
+			// 设置值
+		    var nameVal = [];var phoneVal = [];var emailVal = [];
+		    var signNum;
+		    $(".form-control").each(function(){
+		    	if($(this).attr("name") == "companyName"){
+		    		sessionStorage.setItem('companyName', $(this).val());
+		    	}
+		    	if($(this).attr("name") == "signNum"){
+		    		signNum = $(this).val();
+		    		sessionStorage.setItem('signNum', $(this).val());
+		    	}
+		    });
+		    if(signNum > 1){
+		    	for (var i = 0; i < signNum; i++) {
+		    		console.log(signNum)
+		    		$(".meet_css").each(function(){
+		    			console.log($(this).attr("name_val"))
+		    			if($(this).attr("name_val") == "name"+i){
+		    				nameVal.push($(this).val());
+		    			}
+		    			if($(this).attr("name_val") == "phone"+i){
+		    				phoneVal.push($(this).val());
+		    			}
+		    			if($(this).attr("name_val") == "email"+i){
+		    				emailVal.push($(this).val());
+		    			}
+		    		});
+		    	}
+		    }else{
+		    	nameVal = $('input[name_val="name1"]').val();
+		    	phoneVal = $('input[name_val="phone1"]').val();
+		    	emailVal = $('input[name_val="email1"]').val();
+		    }
+	    	sessionStorage.setItem('name', nameVal);
+	    	sessionStorage.setItem('phone', phoneVal);
+		    sessionStorage.setItem('email', emailVal);
+			$.ajax({
+				url: 'wxpay_Action!addSign.action',
+				type: 'POST',
+				data: $("form").serialize(),
+				cache: false,
+				async: true,
+				success: function (result) {
+					location.href = 'wxpay_Action!toInvoice.action?id='+result;
+				},
+				error: function () {
+					alert('提交失败，可能网络开了小差！')
+				}
+			});
+		}
+	});
+	// 微信分享
+	wx.config({
+        debug: false,
+        appId: 'wx98515e6eab830824',
+        timestamp: $("#timestamp").val(),
+        nonceStr: $("#nonceStr").val(),
+        signature: $("#signature").val(),
+        jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'onMenuShareTimeline',  
+            'onMenuShareAppMessage'
+          ]
+    });
+	wx.ready(function (){
+		var title = '第三届光伏发电运营及后服务研讨会';
+		var link = 'http://open.weixin.qq.com/connect/oauth2/authorize?appid=wx98515e6eab830824&redirect_uri=http://data.pvmen.com/emailPvmen/wxpay_Action.action&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect';
+		
+		wx.onMenuShareTimeline({    
+			title: title, // 分享标题     
+			link: $("#url").val(), // 分享
+			imgUrl: $("#imgLogo").val(), // 分享图标      
+			success: function () {
+				// 用户确认分享后执行的回调函数      
+			},      
+			cancel: function () {           
+				// 用户取消分享后执行的回调函数      
+			}  
+		});
+		wx.onMenuShareAppMessage({      
+			title: title, // 分享标题      
+			link: $("#url").val(),
+			desc: '地点：北京广电国际酒店 时间：10月23日-24日', // 分享
+			imgUrl: $("#imgLogo").val(), // 分享图标      
+			type: '', // 分享类型,music、video或link，不填默认为link      
+			dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空      
+			success: function () {           
+				// 用户确认分享后执行的回调函数      
+			},      
+			cancel: function () {           
+				// 用户取消分享后执行的回调函数      
+			}  
+		}); 
+	});
+	
+});

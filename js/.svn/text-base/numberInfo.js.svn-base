@@ -1,0 +1,135 @@
+$(function () {
+	var signNum = $("#signNum").val();
+	for (i = 1; i <= signNum; i++) {
+		var numberInfo = "<p>参会人员" + i + "<p><div class='section" + i + "'><div class='form-group'><input type='text' id='name" + i +
+			"' class='form-control' name='name"+i+"' value=''  autocomplete='off' placeholder='请填写您的姓名'></div><div class='form-group'><input type='text' id='phone" +
+			i + "' class='form-control' name='phone"+i+"' value='' autocomplete='off' placeholder='请填写您的手机号'></div><div class='form-group'><input type='text' id='email" +
+			i + "' class='form-control' name='email"+i+"' value='' autocomplete='off' placeholder='请填写您的邮箱'></div></div>";
+		$('#form-info').append(numberInfo);
+	}
+	//设定表单验证的规则
+	$('#form-info').bootstrapValidator({
+		live: 'enabled',
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			name: {
+				message: '姓名验证失败',
+				validators: {
+					notEmpty: {
+						message: '姓名不能为空'
+					},
+					stringLength: {
+						min: 2,
+						max: 4,
+						message: '姓名长度必须在2~4个字符之间'
+					}
+				}
+			},
+			phone: {
+				validators: {
+					notEmpty: {
+						message: '手机号不能为空'
+					},
+					regexp: {
+						regexp: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+						message: '手机号码格式有误'
+					}
+				}
+			},
+			email: {
+				validators: {
+					notEmpty: {
+						message: '邮箱地址不能为空'
+					},
+					emailAddress: {
+						message: '邮箱地址格式有误'
+					}
+				}
+			}
+
+		}
+
+	});
+	//表单验证成功以后的操作
+	$('#btn-info').click(function () {
+		$('#form-info').bootstrapValidator('validate'); //提交验证
+		if ($('#form-info').data('bootstrapValidator').isValid()) { //获取验证结果，如果成功，执行下面代码
+			var form = $("#form-info").serializeArray();
+//			$.ajax({
+//				url: 'wxpay_Action!weixinPay.action',
+//				type: 'POST',
+//				data: {
+//					"form":JSON.stringify(form),
+//					"id":$("#signId").val()
+//				},
+//				cache: false,
+//				async: true,
+//				success: function (data) {
+//					window.location.href = "wxpay_Action!success.action?prepayId="+data.package+"&state=1";
+//				},
+//				error: function () {
+//					alert('保存失败，可能网络开了小差！')
+//				}
+//			});
+			wx.config({
+		        debug: false,
+		        appId: 'wx98515e6eab830824',
+		        timestamp: $("#timestamp").val(),
+		        nonceStr: $("#nonceStr").val(),
+		        signature: $("#signature").val(),
+		        jsApiList: [
+		            // 所有要调用的 API 都要加到这个列表中
+		            'chooseWXPay'
+		          ]
+		    });
+			wx.ready(function () {
+		    	$.ajax({
+					url: 'wxpay_Action!weixinPay.action',
+			        type: "post",
+			        cache: false,
+			        data:{
+			        	"form":JSON.stringify(form),
+						"id":$("#signId").val(),
+						"signNum":$("#signNum").val()
+			        },
+			        success:function(data){
+			        	data = jQuery.parseJSON(data);
+			        	console.log(data);
+		             	 wx.chooseWXPay({
+		             	        timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+		             	        nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+		             	        package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+		             	        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+		             	        paySign: data.paySign, // 支付签名
+		             	        success: function (res) {
+		             	            // 支付成功后的回调函数
+		             	        	window.location.href = "wxpay_Action!success.action?prepayId="+data.package+"&state=1";
+		             	        },
+		             	        fail: function(res) {
+		             	            //接口调用失败时执行的回调函数。.
+		             	        	alert("支付失败");
+//		             	        	window.location.href = "wxpay_Action!success.action?prepayId="+data.package+"&state=2";
+		             	        },
+		             	        complete: function(res) {
+		             	            //接口调用完成时执行的回调函数，无论成功或失败都会执行。
+		             	        },
+		             	        cancel: function(res) {
+		             	            //用户点击取消时的回调函数，仅部分有用户取消操作的api才会用到。
+		             	        },
+		             	        trigger: function(res) {
+		             	            //监听Menu中的按钮点击时触发的方法，该方法仅支持Menu中的相关接口。
+		             	        }
+		             	 });
+			        }
+		    	});
+		      });
+		}
+	});
+})
+
+

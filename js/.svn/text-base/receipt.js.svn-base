@@ -1,0 +1,159 @@
+$(function () {
+	//根据会议人数更新内容
+	var signNum=$("#signNum").val();
+	if(signNum == 1){
+		$("#signHideId").hide();
+	}
+	//$('.signNum_m').html(signNum);
+	//$('.all').html(signNum*1500);
+	//发票领取号
+	var order=$("#invoiceNum").val();
+	var number = ""; //发票领取号
+	if($('input[name="invoiceType"]:checked').val() == "all"){
+		number = Number(order) + 1;
+	}else{
+		for (var i = 0; i < signNum; i++) {
+			order++;
+			number+=order+',';
+		}
+	    //去掉最后一个逗号
+	    if (number.length > 0) {
+	    	number = number.substr(0, number.length - 1);
+	    }
+	}
+	$('input[name="invoiceType"]').click(function(){
+		number = "";
+		order=$("#invoiceNum").val();
+		if($('input[name="invoiceType"]:checked').val() == "all"){
+			number = Number(order) + 1;
+		}else{
+			for (var i = 0; i < signNum; i++) {
+				order++;
+				number+=order+',';
+			}
+		    //去掉最后一个逗号
+		    if (number.length > 0) {
+		    	number = number.substr(0, number.length - 1);
+		    }
+		}
+	});
+	
+	//是否开具发票
+	$('#optionsRadios1').click(function () {
+		$('.ssr').show();
+	});
+	$('#optionsRadios2').click(function () {
+		$('.ssr').hide();
+	});
+	//设定表单验证的规则
+	$('#form-invoice').bootstrapValidator({
+		live: 'enabled',
+		message: 'This value is not valid',
+		feedbackIcons: {
+		valid: 'glyphicon glyphicon-ok',
+		invalid: 'glyphicon glyphicon-remove',
+		validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			invoiceCompanyName: {
+				validators: {
+					notEmpty: {
+						message: '公司名称不能为空'
+					}
+				}
+			},
+			isInvoice:{
+				validators: {
+					notEmpty: {
+						message: '必选!'
+					}
+				}
+			},
+			invoiceContent:{
+				validators: {
+					notEmpty: {
+						message: '必选!'
+					}
+				}
+			},
+			invoiceType:{
+				validators: {
+					notEmpty: {
+						message: '必选!'
+					}
+				}
+			},
+			invoiceNum:{
+				validators: {
+					notEmpty: {
+						message: '纳税人识别号不能为空'
+					}
+				}
+			}
+		}
+	}); 
+	//表单验证成功以后的操作
+	 $(document).on("click","#btn-invoice",function () {
+		$('#form-invoice').bootstrapValidator('validate'); //提交验证
+		if ($('#form-invoice').data('bootstrapValidator').isValid()) { //获取验证结果，如果成功，执行下面代码
+			wx.config({
+		        debug: false,
+		        appId: 'wx98515e6eab830824',
+		        timestamp: $("#timestamp").val(),
+		        nonceStr: $("#nonceStr").val(),
+		        signature: $("#signature").val(),
+		        jsApiList: [
+		            // 所有要调用的 API 都要加到这个列表中
+		            'chooseWXPay'
+		          ]
+		    });
+			wx.ready(function () {
+		    	$.ajax({
+					url: 'invoice_Action!addInvoice.action',
+			        type: "post",
+			        cache: false,
+			        data:{
+						"signId":$("#signId").val(),
+						"signNum":$("#signNum").val(),
+	    	        	"isInvoice":$('input[name="isInvoice"]:checked').val(),
+	    	        	"invoiceContent":$('input[name="invoiceContent"]:checked').val(),
+	    	        	"invoiceType":$('input[name="invoiceType"]:checked').val(),
+	    	        	"invoiceCompanyName":$('input[name="invoiceCompanyName"]').val(),
+	    	        	"invoiceDuty":$('input[name="invoiceDuty"]').val(),
+	    	        	"invoiceNum":number,
+			        },
+			        success:function(data){
+			        	data = jQuery.parseJSON(data);
+			        	console.log(data);
+		             	 wx.chooseWXPay({
+		             	        timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+		             	        nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+		             	        package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+		             	        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+		             	        paySign: data.paySign, // 支付签名
+		             	        success: function (res) {
+		             	            // 支付成功后的回调函数
+		             	        	window.location.href = "wxpay_Action!success.action?prepayId="+data.package+"&state=1&invoiceNum="+number;
+		             	        },
+		             	        fail: function(res) {
+		             	            //接口调用失败时执行的回调函数。.
+		             	        	alert("支付失败");
+//		             	        	window.location.href = "wxpay_Action!success.action?prepayId="+data.package+"&state=2";
+		             	        },
+		             	        complete: function(res) {
+		             	            //接口调用完成时执行的回调函数，无论成功或失败都会执行。
+		             	        },
+		             	        cancel: function(res) {
+		             	            //用户点击取消时的回调函数，仅部分有用户取消操作的api才会用到。
+		             	        },
+		             	        trigger: function(res) {
+		             	            //监听Menu中的按钮点击时触发的方法，该方法仅支持Menu中的相关接口。
+		             	        }
+		             	 });
+			        }
+		    	});
+		      });
+		}
+	}); 
+
+});
