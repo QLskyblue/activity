@@ -1,3 +1,4 @@
+
 html,
 body {
 	height: 100%;
@@ -14,83 +15,165 @@ body {
 }
 /* swiper end */
 /* background image */
-.one {
-	background: url(../img/1.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
+@media screen and (max-width: 1080px) {
+   .one {
+   	background: url(../img/1.1.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .two {
+   	background: url(../img/2.2.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .three {
+   	background: url(../img/3.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .four {
+   	background: url(../img/4.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .five {
+   	background: url(../img/5.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .six {
+   	background: url(../img/6.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .seven {
+   	background: url(../img/7.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .eight {
+   	background: url(../img/8.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   .nine {
+   	background: url(../img/9.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   	color: #fff;
+   }
+   .ten {
+   	background: url(../img/10.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
 }
-
-.two {
-	background: url(../img/2.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.three {
-	background: url(../img/3.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.four {
-	background: url(../img/4.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.five {
-	background: url(../img/5.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.six {
-	background: url(../img/6.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.seven {
-	background: url(../img/7.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-
-.eight {
-	background: url(../img/8.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-}
-.nine {
-	background: url(../img/9.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
-	color: #fff;
-}
-.ten {
-	background: url(../img/10.jpg) no-repeat center center;
-	-webkit-background-size: contain;
-	-moz-background-size: contain;
-	-o-background-size: contain;
-	background-size: contain;
+@media screen and (min-width: 1080px) {
+   .one {
+   	background: url(../img/1.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .two {
+   	background: url(../img/2.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .three {
+   	background: url(../img/3.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .four {
+   	background: url(../img/4.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .five {
+   	background: url(../img/5.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .six {
+   	background: url(../img/6.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .seven {
+   	background: url(../img/7.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   
+   .eight {
+   	background: url(../img/8.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
+   .nine {
+   	background: url(../img/9.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   	color: #fff;
+   }
+   .ten {
+   	background: url(../img/10.jpg) no-repeat center center;
+   	-webkit-background-size: cover;
+   	-moz-background-size: cover;
+   	-o-background-size: cover;
+   	background-size: cover;
+   }
 }
 /* background image end */
 /* form css start */
